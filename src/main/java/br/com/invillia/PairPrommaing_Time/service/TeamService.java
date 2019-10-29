@@ -37,7 +37,11 @@ public class TeamService {
     }
 
     @Transactional
+
     public void update(Team team){
+
+        Team team1 = teamRepository.findById(team.getId()).get();
+        team.setCreatedAt(team1.getCreatedAt());
         teamRepository.save(team);
     }
 }

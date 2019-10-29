@@ -20,7 +20,7 @@ public class Member {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @ManyToOne()
     @JoinColumn(nullable = false)
@@ -38,7 +38,7 @@ public class Member {
     }
 
     public Member(String nome, Team team) {
-        this.nome = nome;
+        this.name = nome;
         this.team = team;
     }
 
@@ -50,12 +50,16 @@ public class Member {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public Team getTeam() {
@@ -86,7 +90,7 @@ public class Member {
     public String toString() {
         return "Member{" +
                 "id=" + id +
-                ", name='" + nome + '\'' +
+                ", name='" + name + '\'' +
                 ", team=" + team +
                 ", createdAt=" + createdAt +
                 ", updateAt=" + updateAt +
