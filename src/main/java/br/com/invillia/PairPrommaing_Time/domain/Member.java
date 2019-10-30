@@ -5,6 +5,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
+
     @ManyToOne()
     @JoinColumn(nullable = false)
     private Team team;
@@ -37,8 +39,8 @@ public class Member {
     public Member() {
     }
 
-    public Member(String nome, Team team) {
-        this.name = nome;
+    public Member(String name, Team team) {
+        this.name = name;
         this.team = team;
     }
 

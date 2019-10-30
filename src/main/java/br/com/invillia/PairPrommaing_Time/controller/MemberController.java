@@ -1,37 +1,44 @@
 package br.com.invillia.PairPrommaing_Time.controller;
 
 import br.com.invillia.PairPrommaing_Time.domain.Member;
+import br.com.invillia.PairPrommaing_Time.domain.Team;
 import br.com.invillia.PairPrommaing_Time.service.MemberService;
+import br.com.invillia.PairPrommaing_Time.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
+    private final TeamService teamService;
 
     @Autowired
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, TeamService teamService) {
         this.memberService = memberService;
+        this.teamService = teamService;
     }
 
     @GetMapping("/")
     public String findAll(Model model){
         model.addAttribute("members",memberService.findAll());
 
-        return "Member/ListarMembers";
+        return "Member/ListMembers";
     }
 
     @GetMapping("/registerMember")
-    public String register(@Valid Member member){
+    public String register(@Valid Member member, Model model){
+        model.addAttribute("teams",teamService.findAll());
         return "Member/RegisterMember";
     }
 
@@ -45,6 +52,41 @@ public class MemberController {
         memberService.save(member);
         model.addAttribute("member",memberService.findAll());
 
-        return "Member/ListarMembers";
+        return "Member/ListMembers";
+    }
+
+    @GetMapping("/editMember/{id}")
+    public String edit(@PathVariable("id") long id, Model model){
+        Member member = memberService.findById(id);
+        List<Team> teams = teamService.findAll();
+
+        model.addAttribute("member",member);
+        model.addAttribute("teams",teams);
+
+        return "Member/UpdateMember";
+    }
+
+    @PostMapping("/updateMember/{id}")
+    public String upDate(@PathVariable("id") long id, @Valid Member member, BindingResult result, Model model){
+
+        if(result.hasErrors()){
+            member.setId(id);
+            return "Member/UpdateMember";
+        }
+
+        memberService.update(member);
+        model.addAttribute("members",memberService.findAll());
+
+        return "Member/ListMembers";
+    }
+
+    @GetMapping("/deleteMember/{id}")
+    public String delete(@PathVariable("id") long id, Model model){
+
+        memberService.delete(memberService.findById(id));
+
+        model.addAttribute("members",memberService.findAll());
+        return "Member/ListMembers";
+
     }
 }
