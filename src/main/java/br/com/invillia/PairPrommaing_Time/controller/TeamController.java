@@ -1,5 +1,6 @@
 package br.com.invillia.PairPrommaing_Time.controller;
 
+import br.com.invillia.PairPrommaing_Time.domain.Member;
 import br.com.invillia.PairPrommaing_Time.domain.Team;
 import br.com.invillia.PairPrommaing_Time.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/team")
@@ -26,7 +30,6 @@ public class TeamController {
     @GetMapping("/")
     public String findAll(Model model){
         model.addAttribute("teams",teamService.findAll());
-
         return "Team/ListTeams";
     }
 
@@ -76,5 +79,24 @@ public class TeamController {
         model.addAttribute("teams",teamService.findAll());
         return "Team/ListTeams";
 
+    }
+
+    @GetMapping("/searchTeam")
+    public String searchMember(@RequestParam("searchTerm") String searchTerm,
+                               @RequestParam("searchType") String searchType, Model model){
+
+        switch(searchType){
+            case "Id":
+                try{
+                    model.addAttribute("teams",teamService.findAllById(Long.valueOf(searchTerm)));
+                }
+                catch(Exception e ){
+                    model.addAttribute("teams",new ArrayList<Team>());
+                }
+                break;
+            default:
+                model.addAttribute("teams",teamService.findByNameContainingIgnoreCase(searchTerm));
+        }
+        return "Team/ListTeams";
     }
 }

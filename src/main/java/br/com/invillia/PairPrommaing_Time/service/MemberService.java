@@ -7,6 +7,7 @@ import br.com.invillia.PairPrommaing_Time.repository.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.plaf.metal.MetalMenuBarUI;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class MemberService {
         this.teamRepository = teamRepository;
     }
 
-    @Transactional
+    //@Transactional
     public void save(Member member){
         memberRepository.save(member);
     }
@@ -47,4 +48,15 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public List<Member> findByNameContainingIgnoreCase(String searchTerm) {
+        return memberRepository.findByNameContainingIgnoreCase(searchTerm);
+    }
+
+    public List<Member> findByTeamNameContainingIgnoreCase(String searchTerm) {
+        return memberRepository.findByTeamNameContainingIgnoreCase(searchTerm);
+    }
+
+    public List<Member> findAllById(Long id) {
+        return memberRepository.findAllById(id);
+    }
 }

@@ -44,4 +44,13 @@ public class TeamService {
         team.setCreatedAt(team1.getCreatedAt());
         teamRepository.save(team);
     }
+
+    public List<Team> findAllById(Long id) {
+
+        return teamRepository.findAllById(id);
+    }
+
+    public List<Team> findByNameContainingIgnoreCase(String searchTerm) {
+        return teamRepository.findByNameContainingIgnoreCase(searchTerm);
+    }
 }

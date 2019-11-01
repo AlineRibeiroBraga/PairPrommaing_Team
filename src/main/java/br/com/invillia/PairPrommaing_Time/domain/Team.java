@@ -2,8 +2,11 @@ package br.com.invillia.PairPrommaing_Time.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +34,7 @@ public class Team {
     @Column(nullable = false)
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team",cascade = CascadeType.REMOVE)
     private List<Member> members;
 
     public Team() {

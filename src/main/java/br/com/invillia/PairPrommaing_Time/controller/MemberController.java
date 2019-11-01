@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,23 +39,30 @@ public class MemberController {
     }
 
     @GetMapping("/registerMember")
-    public String register(@Valid Member member, Model model){
-        model.addAttribute("teams",teamService.findAll());
-        return "Member/RegisterMember";
+    public String register(Member member, Model model){
+
+        List<Team> teams = teamService.findAll();
+
+        if(!teams.isEmpty()){
+            model.addAttribute("teams",teams);
+            return "Member/RegisterMember";
+        }
+
+        return "Member/Error";
     }
 
     @PostMapping("/saveMember")
     public String save(@Valid Member member, BindingResult result, Model model){
 
         if(result.hasErrors()){
+            model.addAttribute("teams", teamService.findAll());
             return "Member/RegisterMember";
         }
 
         memberService.save(member);
-        model.addAttribute("member",memberService.findAll());
-
-        return "Member/ListMembers";
+        return "redirect:/member/";
     }
+
 
     @GetMapping("/editMember/{id}")
     public String edit(@PathVariable("id") long id, Model model){
@@ -71,13 +80,12 @@ public class MemberController {
 
         if(result.hasErrors()){
             member.setId(id);
+            model.addAttribute("teams", teamService.findAll());
             return "Member/UpdateMember";
         }
 
         memberService.update(member);
-        model.addAttribute("members",memberService.findAll());
-
-        return "Member/ListMembers";
+        return "redirect:/member/";
     }
 
     @GetMapping("/deleteMember/{id}")
@@ -85,8 +93,31 @@ public class MemberController {
 
         memberService.delete(memberService.findById(id));
 
-        model.addAttribute("members",memberService.findAll());
-        return "Member/ListMembers";
+        return "redirect:/member/";
 
+    }
+
+    @GetMapping("/searchMember")
+    public String searchMember(@RequestParam("searchTerm") String searchTerm,
+                               @RequestParam("searchType") String searchType, Model model){
+
+        switch(searchType){
+            case "Id":
+                try{
+                    model.addAttribute("members",memberService.findAllById(Long.valueOf(searchTerm)));
+                }
+                catch(Exception e ){
+                    model.addAttribute("members",new ArrayList<Member>());
+                }
+                break;
+            case "Team":
+                model.addAttribute("members",memberService.findByTeamNameContainingIgnoreCase(searchTerm));
+                break;
+            default:
+                model.addAttribute("members",memberService.findByNameContainingIgnoreCase(searchTerm));
+        }
+
+
+        return "Member/ListMembers";
     }
 }
