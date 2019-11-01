@@ -4,19 +4,19 @@
 <head th:replace="header :: header"></head>
 <body>
 <div class="container my-5">
-    <h2 class="mb-5">Update Member</h2>
+    <h2 class="mb-5" style="font-family:verdana; color:blue;">Update Member</h2>
     <div class="row">
         <div class="col-md-6">
             <form action="#" th:action="@{/member/updateMember/{id}(id=${member.id})}" th:object="${member}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="name" class="col-form-label">Name</label>
-                        <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Name">
+                        <label for="name" class="col-form-label" style="font-family:verdana; color:black; font-size:18px">Name</label>
+                        <input type="text" th:field="*{name}" class="form-control" style="font-family:verdana; font-size:18px" id="name" placeholder="Name">
                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="teamSelect"s class="col-form-label">Team</label>
-                        <select class="form-control" id="teamSelect" th:field="*{team.id}">
+                        <label for="teamSelect" class="col-form-label" style="font-family:verdana; color:black; font-size:18px" >Team</label>
+                        <select class="form-control"  style="font-family:verdana; color:black; font-size:18px" id="teamSelect" th:field="*{team.id}">
                             <option th:if="${teams.empty}">
                                 No teams registered!
                             </option>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="submit" class="btn btn-primary" value="Update">
+                        <input type="submit" class="btn btn-primary" style="font-family:verdana; font-size:18px" value="Update">
                     </div>
                 </div>
             </form>

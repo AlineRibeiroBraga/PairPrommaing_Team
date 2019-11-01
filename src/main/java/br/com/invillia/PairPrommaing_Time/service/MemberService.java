@@ -2,6 +2,8 @@ package br.com.invillia.PairPrommaing_Time.service;
 
 import br.com.invillia.PairPrommaing_Time.domain.Member;
 import br.com.invillia.PairPrommaing_Time.domain.Team;
+import br.com.invillia.PairPrommaing_Time.exception.MemberNotFoundException;
+import br.com.invillia.PairPrommaing_Time.exception.TeamNotFoundException;
 import br.com.invillia.PairPrommaing_Time.repository.MemberRepository;
 import br.com.invillia.PairPrommaing_Time.repository.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -31,11 +33,14 @@ public class MemberService {
     }
 
     public Member findById(Long id){
-        return memberRepository.findById(id).isEmpty() ? null : memberRepository.findById(id).get();
+
+        Member member = memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException(String.valueOf(id)));
+        return member;
     }
 
     @Transactional
-    public void delete(Member member){
+    public void delete(long id){
+        Member member = memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException(String.valueOf(id)));
         memberRepository.delete(member);
     }
 

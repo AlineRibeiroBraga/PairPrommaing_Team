@@ -1,6 +1,8 @@
 package br.com.invillia.PairPrommaing_Time.service;
 
 import br.com.invillia.PairPrommaing_Time.domain.Team;
+import br.com.invillia.PairPrommaing_Time.exception.ActionNotPermitedException;
+import br.com.invillia.PairPrommaing_Time.exception.TeamNotFoundException;
 import br.com.invillia.PairPrommaing_Time.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,10 @@ public class TeamService {
     }
 
     public Team findById(Long id) {
-        return teamRepository.findById(id).isEmpty() ? null : teamRepository.findById(id).get();
+
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException(String.valueOf(id)));
+
+        return team;
     }
 
     @Transactional
@@ -33,7 +38,8 @@ public class TeamService {
 
     @Transactional
     public void delete(Long id){
-        teamRepository.deleteById(id);
+        Team team = teamRepository.findById(id).orElseThrow(() -> new TeamNotFoundException(String.valueOf(id)));
+        teamRepository.delete(team);
     }
 
     @Transactional

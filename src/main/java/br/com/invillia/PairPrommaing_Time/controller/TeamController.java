@@ -2,18 +2,23 @@ package br.com.invillia.PairPrommaing_Time.controller;
 
 import br.com.invillia.PairPrommaing_Time.domain.Member;
 import br.com.invillia.PairPrommaing_Time.domain.Team;
+import br.com.invillia.PairPrommaing_Time.exception.ActionNotPermitedException;
 import br.com.invillia.PairPrommaing_Time.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @Controller
@@ -98,5 +103,10 @@ public class TeamController {
                 model.addAttribute("teams",teamService.findByNameContainingIgnoreCase(searchTerm));
         }
         return "Team/ListTeams";
+    }
+
+    @ExceptionHandler(ActionNotPermitedException.class)
+    public void exceptionHandler(HttpServletResponse response, Exception e) throws IOException {
+        response.sendError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage());
     }
 }

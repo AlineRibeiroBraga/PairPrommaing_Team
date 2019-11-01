@@ -6,24 +6,25 @@
     <div class="row">
         <div class="col-md-12">
             <div th:case="*">
-                <h2 class="my-5">Teams</h2>
+                <h2 class="my-5" style="font-family:verdana; color:blue;">Teams</h2>
                 <div>
                     <form class="form-inline" th:action="@{/team/searchTeam}" method="get">
                         <div class="form-group mb-2">
-                            <select class="form-control mr-2" th:name="searchType">
+                            <select class="form-control mr-2" style="font-family:verdana; color:black;font-size:18px" th:name="searchType">
                                 <option>Name</option>
-                                <option>Id</option>
+                                <option>ID</option>
                             </select>
-                            <input th:name="searchTerm" type="text" class="form-control" id="search" placeholder="Search by...">
-                            <button type="submit" class="btn btn-primary mb-2 mr-2">Search</button>
+                            <input th:name="searchTerm" type="text" class="form-control" id="search" placeholder="Search by..." style="font-family:verdana; font-size:18px;">
+                            <button type="submit" class="btn btn-primary ml-2" style="font-family:verdana;font-size:18px">Search</button>
                         </div>
                     </form>
                 </div>
-                <table class="table table-striped table-responsive-md">
+                <table class="table table-striped table-responsive-md" style="font-family:verdana; color:black;font-size:18px">
                     <thead>
                     <tr>
-                        <th>id</th>
+                        <th>ID</th>
                         <th>Name</th>
+                        <th>Members</th>
                         <th>Create</th>
                         <th>UpDate</th>
                         <th>Edit</th>
@@ -37,6 +38,12 @@
                     <tr th:each="team : ${teams}">
                         <td th:text="${team.id}"></td>
                         <td th:text="${team.name}"></td>
+                        <td>
+                            <select class="form-control" id="teamSelect" style="font-family:verdana; color:black;" >
+                                <option th:each="m : ${team.members}" th:text="${m.name}">
+                                </option>
+                            </select>
+                        </td>
                         <td th:text="${#temporals.format(team.createdAt,'dd/MM/yyyy HH:mm:ss')}"></td>
                         <td th:text="${#temporals.format(team.updateAt,'dd/MM/yyyy HH:mm:ss')}"></td>
                         <td><a th:href="@{/team/editTeam/{id}(id=${team.id})}" class="btn btn-primary"><i

@@ -3,23 +3,24 @@
 <head th:replace="header :: header"></head>
 <body>
 <div class="container my-5">
-    <h2 class="mb-5">New Member</h2>
+    <h2 class="mb-5" style="font-family:verdana; color:blue;">New Member</h2>
     <div class="row">
         <div class="col-md-6">
             <form action="#" th:action="@{/member/saveMember}" th:object="${member}" method="post">
                 <div class="row">
                     <div class="form-group col-md-6">
+                        <label for="name" class="col-form-label" style="font-family:verdana; color:black; font-size:18px" >Member</label>
                         <input type="text" th:field="*{name}" class="form-control" id="name"
-                               placeholder="Digite o Nome">
+                               style="font-family:verdana;font-size:18px" placeholder="Name">
                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="teamSelect">Time</label>
-                        <select class="form-control" id="teamSelect" th:field="*{team.id}">
+                        <label for="name" class="col-form-label" style="font-family:verdana; color:black; font-size:18px">Team</label>
+                        <select class="form-control" id="teamSelect" th:field="*{team.id}"  style="font-family:verdana; color:black; font-size:18px">
                             <option th:if="${teams.empty}">
-                                Nenhum time cadastrado!
+                                No team registered!
                             </option>
                             <option th:each="team : ${teams}" th:value="${team.id}"
                                     th:text="${team.name}" >
@@ -29,7 +30,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="submit" class="btn btn-primary" value="Add">
+                        <input type="submit" class="btn btn-primary"  style="font-family:verdana; font-size:18px" value="Add">
                     </div>
                 </div>
             </form>
